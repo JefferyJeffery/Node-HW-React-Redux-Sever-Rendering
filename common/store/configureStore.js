@@ -7,7 +7,7 @@ export default function configureStore(preloadedState) {
   const store = createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(createLogger({ stateTransformer: state => state.toJS() }), thunk)
-  )
-  return store
+    applyMiddleware(createLogger({ stateTransformer: state => state.toJS() }), thunk),
+  );
+  return store;
 }

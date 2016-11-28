@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react';
 
 const Counter = ({
   count,
@@ -23,13 +23,13 @@ const Counter = ({
 Counter.propTypes = {
   count: PropTypes.number.isRequired,
   onIncrement: PropTypes.func.isRequired,
-  onDecrement: PropTypes.func.isRequired
-}
+  onDecrement: PropTypes.func.isRequired,
+};
 
 Counter.defaultProps = {
   count: 0,
   onIncrement: () => {},
-  onDecrement: () => {}
-}
+  onDecrement: () => {},
+};
 
 export default Counter;

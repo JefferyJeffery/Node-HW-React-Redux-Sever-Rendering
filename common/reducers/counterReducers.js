@@ -8,17 +8,11 @@ import {
 } from '../constants/actionTypes';
 
 const counterReducers = handleActions({
-  INCREMENT_COUNT: (state) => (
-    state.set(
-      'count',
-      state.get('count') + 1
-    )
+  INCREMENT_COUNT: state => (
+    state.set('count', state.get('count') + 1)
   ),
-  DECREMENT_COUNT: (state) => (
-    state.set(
-      'count',
-      state.get('count') - 1
-    )
+  DECREMENT_COUNT: state => (
+    state.set('count', state.get('count') - 1)
   ),
 }, CounterState);
 

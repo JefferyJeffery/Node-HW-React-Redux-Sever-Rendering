@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import Counter from '../components/Counter';
 
@@ -8,15 +9,15 @@ import {
 } from '../actions/counterActions';
 
 export default connect(
-  (state) => ({
-    count: state.get('counterReducers').get('count'),
+  state => ({
+    count: state.get('count'),
   }),
-  (dispatch) => ({
+  dispatch => ({
     onIncrement: () => (
       dispatch(incrementCount())
     ),
     onDecrement: () => (
       dispatch(decrementCount())
     ),
-  })
+  }),
 )(Counter);

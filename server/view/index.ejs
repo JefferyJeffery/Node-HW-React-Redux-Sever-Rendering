@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html <%- metaHeader.htmlAttributes.toString() %> >
+  <head>
+    <title>Redux Universal Example</title>
+  </head>
+  <body>
+    <div id="app"><%- html %></div>
+    <script type="text/javascript" charset="utf-8">
+      window.__PRELOADED_STATE__ = '<%- preloadedState  %>'
+    </script>
+    <% scriptSrcs.forEach(function(src){ %>
+      <script src="<%= src %>"></script>
+    <% }) %>
+  </body>
+</html>

@@ -1,27 +1,38 @@
-// 讓你可以動態插入 bundle 好的 .js 檔到 .index.html
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
 
-const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: `${__dirname}/client/index.html`,
-  filename: 'index.html',
-  inject: 'body',
-});
+const DEBUG = !(process.env.NODE_ENV === 'production')
+const env = {
+  NODE_ENV: process.env.NODE_ENV,
+  API_BASE_URL: process.env.API_BASE_URL
+}
 
-// entry 為進入點，output 為進行完 eslint、babel loader 轉譯後的檔案位置
-module.exports = {
-  entry: [
-    './client/index.js',
-  ],
-  output: {
-    path: `${__dirname}/dist`,
-    filename: 'index_bundle.js',
+var config = {
+  devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
+  entry: {
+    client: './client/index',
   },
+  resolve: {
+    root: [path.join(__dirname, 'client') ]
+  },
+  output: {
+    path: path.join(__dirname, "dist"),
+    filename: '[name].js',
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(env)
+    })
+  ],
   module: {
     preLoaders: [
       {
         test: /\.jsx$|\.js$/,
         loader: 'eslint-loader',
-        include: `${__dirname}/src`,
+        includes:[
+          path.join(__dirname, "client"),
+          path.join(__dirname, "common"),
+        ],
         exclude: /bundle\.js$/
       }
     ],
@@ -34,9 +45,37 @@ module.exports = {
       },
     }],
   },
-  // 啟動開發測試用 server 設定（不能用在 production）
-  devServer: {
-    inline: true,
-    port: 8008,
-  },
 };
+
+if (DEBUG) {
+  config.entry.dev = [
+    'webpack-dev-server/client?http://localhost:3001',
+    'webpack/hot/only-dev-server',
+  ]
+
+  config.plugins = config.plugins.concat([
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filname: 'vendor.js'
+    })
+  ])
+  config.output.publicPath = 'http://localhost:3001/static/'
+  config.module.loaders[0].query = {
+    "env": {
+      "development": {
+        "presets": ["react-hmre"]
+      }
+    }
+  }
+} else {
+  config.plugins = config.plugins.concat([
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filname: '[name].[chunkhash].js'
+    }),
+    new webpack.optimize.UglifyJsPlugin(),
+  ])
+}
+
+module.exports = config;
