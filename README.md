@@ -1,6 +1,6 @@
 ## 1. Install
 ~~~
-yarn install
+yarn
 ~~~
 
 ## 2. dev

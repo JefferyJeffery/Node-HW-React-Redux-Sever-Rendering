@@ -2,7 +2,6 @@
   "scripts": {
     "init": "eslint --init",
     "start": "cross-env NODE_PATH=./app concurrently --kill-others \"nodemon server\" \"node webpack.server.js\" ",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --content-base build",
     "webpack": "webpack",
     "build": "rimraf dist/ && yarn webpack",
     "postinstall": "yarn build"
